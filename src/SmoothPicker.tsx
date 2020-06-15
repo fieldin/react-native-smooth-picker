@@ -42,11 +42,11 @@ interface Props extends FlatListProps<any> {
 interface State {
   selected: number;
   scrollPosition: number | null;
+  widthParent: number,
+  heightParent: number
 }
 
 class SmoothPicker extends Component<Props, State> {
-  widthParent: number = 0;
-  heightParent: number = 0;
   onMomentum: boolean = false;
   fingerAction: boolean = false;
   options: Option[] = [];
@@ -56,6 +56,8 @@ class SmoothPicker extends Component<Props, State> {
   state = {
     selected: this.props.initialScrollToIndex || 1,
     scrollPosition: null,
+    widthParent: 0,
+    heightParent: 0
   };
 
   componentDidMount() {
@@ -161,7 +163,7 @@ class SmoothPicker extends Component<Props, State> {
           marginLeft: marginStart(
             horizontal,
             index,
-            this.widthParent,
+            this.state.widthParent,
             offsetSelection,
             startMargin
           ),
@@ -169,14 +171,14 @@ class SmoothPicker extends Component<Props, State> {
             horizontal,
             data.length - 1,
             index,
-            this.widthParent,
+            this.state.widthParent,
             offsetSelection,
             endMargin
           ),
           marginTop: marginStart(
             !horizontal,
             index,
-            this.heightParent,
+            this.state.heightParent,
             offsetSelection,
             startMargin
           ),
@@ -184,7 +186,7 @@ class SmoothPicker extends Component<Props, State> {
             !horizontal,
             data.length - 1,
             index,
-            this.heightParent,
+            this.state.heightParent,
             offsetSelection,
             endMargin
           ),
@@ -216,8 +218,10 @@ class SmoothPicker extends Component<Props, State> {
         {...this.props}
         {...snap}
         onLayout={({ nativeEvent: { layout } }) => {
-          this.widthParent = layout.width;
-          this.heightParent = layout.height;
+          this.setState({
+            widthParent: layout.width,
+            heightParent: layout.height
+          })
         }}
         onScroll={({ nativeEvent }) => {
           if (this.fingerAction) {
