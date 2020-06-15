@@ -42,8 +42,8 @@ interface Props extends FlatListProps<any> {
 interface State {
   selected: number;
   scrollPosition: number | null;
-  widthParent: number,
-  heightParent: number
+  widthParent: number;
+  heightParent: number;
 }
 
 class SmoothPicker extends Component<Props, State> {
